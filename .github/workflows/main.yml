@@ -67,6 +67,7 @@ jobs:
       
       - name: Docker run
         run: |
+          sudo docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }}
           sudo docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }} && docker rmi ${{ env.DOCKER_IMAGE }}:latest
           sudo docker run -d -p 80:80 --name paiproject --restart always ${{ env.DOCKER_IMAGE }}:latest
           
