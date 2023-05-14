@@ -18,3 +18,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+import requests, json
+
+# for testing
+@app.get("/")
+def run_pipdream():
+    URL = "https://eodaykl2oenbq4j.m.pipedream.net"
+    data = {'outer': {'inner': 'value'}}
+    res = requests.post(URL, data=json.dumps(data))
+    return 0
