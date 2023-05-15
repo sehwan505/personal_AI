@@ -17,5 +17,5 @@ def get_models():
 def prompting(prompt: str):
     URL = "https://eodaykl2oenbq4j.m.pipedream.net"
     data = {"data": {"prompt": prompt}}
-    res = requests.post(URL, data=json.dumps(prompt))
+    res = requests.post(URL, data=json.dumps(data))
     return res
