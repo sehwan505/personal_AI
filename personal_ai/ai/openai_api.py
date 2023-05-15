@@ -2,9 +2,6 @@ import requests, json
 
 from fastapi import APIRouter
 
-from database import SessionLocal
-from models import Question
-
 router = APIRouter(
     prefix="/api/openai",
 )
