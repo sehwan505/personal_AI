@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from ai import openai_api 
 
 app = FastAPI()
 
@@ -18,12 +19,4 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-import requests, json
-
-# for testing
-@app.get("/")
-def run_pipdream():
-    URL = "https://eodaykl2oenbq4j.m.pipedream.net"
-    data = {'outer': {'inner': 'value'}}
-    res = requests.post(URL, data=json.dumps(data))
-    return 0
+app.include_router(openai_api.router)
