@@ -1,7 +1,7 @@
 import requests, json
 import openai
 from fastapi import APIRouter
-from .pinecone_api import loading_previous_answers
+from .pinecone_api import appending_shots
 router = APIRouter(
     prefix="/api/openai",
 )
