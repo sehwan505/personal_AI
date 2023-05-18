@@ -7,7 +7,7 @@ PINECONE_API_KEY = 'a838ce6a-684a-4779-bf9a-fbdbf2096f91'
 PINECONE_API_ENV = 'northamerica-northeast1-gcp'
 
 
-def loading_previous_answers(prompt: str):
+def appending_shots(prompt: str):
     index_name = 'gpt-answers'
     pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
 
