@@ -1,10 +1,11 @@
 import openai
 import pinecone
+from util import config
 
-openai.api_key = "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"
+openai.api_key = config["OPENAI_KEY"]
 
-PINECONE_API_KEY = 'a838ce6a-684a-4779-bf9a-fbdbf2096f91'
-PINECONE_API_ENV = 'northamerica-northeast1-gcp'
+PINECONE_API_KEY = config["PINECONE_KEY"]
+PINECONE_API_ENV = config["PINECONE_ENV"]
 
 
 def appending_shots(prompt: str):
@@ -25,6 +26,7 @@ def appending_shots(prompt: str):
     )
     query_embeds = embed_query['data'][0]['embedding']
     response = index.query(query_embeds, top_k=5, include_metadata=True)
+    print(response)
     contexts = [f"q:{item['metadata']['prompt']}\na:{item['metadata']['answer']}" for item in response['matches']]
     augmented_query = "\n\n---\n\n".join(contexts)+"\n\n-----\n\n"+prompt
 
