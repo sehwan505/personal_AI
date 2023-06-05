@@ -1,6 +1,9 @@
 import openai
 import pinecone
 from util import config
+from .openai_api import get_openai_embedding
+import uuid
+
 
 openai.api_key = config["OPENAI_KEY"]
 
@@ -31,3 +34,18 @@ def appending_shots(prompt: str):
     augmented_query = "\n\n---\n\n".join(contexts)+"\n\n-----\n\n"+prompt
 
     return augmented_query
+
+def add_vector(text: str):
+    pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
+    index = pinecone.Index('gpt-answers-index')
+    
+    vectors = [{
+                "id": str(uuid.uuid4()),
+                "values":get_openai_embedding(text),
+                "metadata":{'text': text}
+            }]
+    
+    upsert_response = index.upsert(
+        vectors=vectors,
+        namespace='example-namespace'
+    )

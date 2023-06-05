@@ -1,6 +1,7 @@
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from ai import openai_api 
+from pdf import upload_pdf
 
 app = FastAPI()
 
@@ -20,3 +21,4 @@ app.add_middleware(
 )
 
 app.include_router(openai_api.router)
+app.include_router(upload_pdf.router)
