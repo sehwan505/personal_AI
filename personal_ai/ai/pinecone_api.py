@@ -1,7 +1,6 @@
 import openai
 import pinecone
 from util import config
-from .openai_api import get_openai_embedding
 import uuid
 
 
@@ -12,7 +11,7 @@ PINECONE_API_ENV = config["PINECONE_ENV"]
 
 
 def appending_shots(prompt: str):
-    index_name = 'gpt-answers'
+    index_name = 'gpt-answers-index'
     pinecone.init(api_key=PINECONE_API_KEY, environment=PINECONE_API_ENV)
 
     if index_name not in pinecone.list_indexes():
@@ -28,10 +27,11 @@ def appending_shots(prompt: str):
         engine=embed_model
     )
     query_embeds = embed_query['data'][0]['embedding']
-    response = index.query(query_embeds, top_k=5, include_metadata=True)
+    response = index.query(query_embeds, top_k=5, include_metadata=True, namespace='langchain-namespace')
     print(response)
-    contexts = [f"q:{item['metadata']['prompt']}\na:{item['metadata']['answer']}" for item in response['matches']]
+    contexts = [f"context:{item['metadata']['text']}\n" for item in response['matches']]
     augmented_query = "\n\n---\n\n".join(contexts)+"\n\n-----\n\n"+prompt
+    print(augmented_query)
 
     return augmented_query
 
@@ -47,5 +47,18 @@ def add_vector(text: str):
     
     upsert_response = index.upsert(
         vectors=vectors,
-        namespace='example-namespace'
+        namespace='langchain-namespace'
     )
+
+def get_openai_embedding(text: str):
+    embed_model = "text-embedding-ada-002"
+    embed = openai.Embedding.create(
+        input=text,
+        engine=embed_model
+    )
+    embeds = embed['data'][0]['embedding']
+
+    if embeds:
+        return embeds
+    else:
+        raise Exception("Request failed with status code: there is no embeds")
