@@ -17,6 +17,7 @@ tiktoken = "^0.3.3"
 pinecone-client = "^2.2.1"
 python-multipart = "^0.0.6"
 pypdf2 = "<3"
+langchain = "^0.0.192"
 
 
 [build-system]

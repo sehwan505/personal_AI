@@ -5,7 +5,6 @@ import uuid
 
 
 openai.api_key = config["OPENAI_KEY"]
-
 PINECONE_API_KEY = config["PINECONE_KEY"]
 PINECONE_API_ENV = config["PINECONE_ENV"]
 
